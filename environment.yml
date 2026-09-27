@@ -6,6 +6,8 @@ dependencies:
   - numpy
   - pandas
   - matplotlib
+  - seaborn        
+  - scipy          
   - scikit-learn
   - jupyterlab
   - ipykernel
