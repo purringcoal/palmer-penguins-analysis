@@ -6,11 +6,12 @@ dependencies:
   - numpy
   - pandas
   - matplotlib
-  - seaborn        
-  - scipy          
+  - seaborn
+  - scipy
   - scikit-learn
   - jupyterlab
   - ipykernel
   - pytest
   - ruff
+  - pre-commit
   - pip
