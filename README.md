@@ -1,3 +1,4 @@
+[![tests](https://github.com/purringcoal/palmer_penguins/actions/workflows/tests.yml/badge.svg)](https://github.com/<имя>/palmer_penguins/actions/workflows/tests.yml)
 # Пингвины Палмера
 
 Исследование морфологии трёх видов пингвинов (Adelie, Chinstrap, Gentoo).
