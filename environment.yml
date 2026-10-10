@@ -12,4 +12,5 @@ dependencies:
   - jupyterlab
   - ipykernel
   - pytest
+  - ruff
   - pip
