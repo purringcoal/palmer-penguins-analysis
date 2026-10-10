@@ -29,6 +29,10 @@ jobs:
           environment-file: conda-lock.yml
           environment-name: palmer_penguins
           cache-environment: true
+      - name: Стиль кода (ruff)
+        run:
+          ruff check --output-format=github .
+          ruff format --check .
 
       - name: Установить проект
         run: pip install -e .
