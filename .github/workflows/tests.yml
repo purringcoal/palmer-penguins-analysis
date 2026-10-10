@@ -1,0 +1,49 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"   # по понедельникам в 06:00 UTC = 09:00 МСК
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Скачать код репозитория
+        uses: actions/checkout@v7
+
+      - name: Создать окружение из conda-lock.yml
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-file: conda-lock.yml
+          environment-name: palmer_penguins
+          cache-environment: true
+
+      - name: Установить проект
+        run: pip install -e .
+
+      - name: Тесты
+        run: pytest -v
+
+      - name: Конвейер данных
+        run: |
+          python -m palmer_penguins.pipeline
+          python -c "from palmer_penguins.data import load_clean; n = len(load_clean()); assert n == 342, n"
+
+      - name: Блокноты выполняются сверху вниз
+        run: |
+          mkdir -p executed
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.kernel_name=python3 \
+            --output-dir=executed notebooks/*.ipynb
