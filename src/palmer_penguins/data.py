@@ -37,7 +37,7 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     # строки без измерений бесполезны для анализа
     df = df.dropna(subset=NUMERIC)
     # любые значения пола, кроме male/female, считаем пропуском
-    df["sex"] = df["sex"].where(df["sex"].isin(["male", "female"]))
+    #df["sex"] = df["sex"].where(df["sex"].isin(["male", "female"]))
     for col in CATEGORICAL:
         df[col] = df[col].astype("category")
     return df.reset_index(drop=True)
