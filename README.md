@@ -21,8 +21,10 @@ Horst, Hill, Gorman (2020), пакет palmerpenguins.
    Чаще всего ошибается на Chinstrap.
 
 ## Как запустить
-    conda env create -f environment.yml
-    conda activate my-project
+    conda create -n tools -c conda-forge conda-lock   # один раз
+    conda activate tools
+    conda-lock install -n test_anaconda conda-lock.yml
+    conda activate test_anaconda
     pip install -e .
     python -m my_project.pipeline
     pytest
