@@ -30,7 +30,7 @@ jobs:
           environment-name: palmer_penguins
           cache-environment: true
       - name: Стиль кода (ruff)
-        run:
+        run: |
           ruff check --output-format=github .
           ruff format --check .
 
