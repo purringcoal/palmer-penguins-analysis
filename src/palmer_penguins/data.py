@@ -9,7 +9,7 @@ URL = (
     "main/inst/extdata/penguins.csv"
 )
 
-# data.py лежит в test_anaconda/src/my_project/, значит корень проекта на два уровня выше
+# data.py лежит в palmer_penguins/src/palmer_penguins/, значит корень проекта на два уровня выше
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_PATH = PROJECT_ROOT / "data" / "raw" / "penguins.csv"
 PROCESSED_PATH = PROJECT_ROOT / "data" / "processed" / "penguins_clean.csv"

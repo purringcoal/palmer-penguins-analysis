@@ -1,4 +1,4 @@
-name: test_anaconda
+name: palmer_penguins
 channels:
   - conda-forge
 dependencies:

@@ -1,5 +1,5 @@
-"""Полный конвейер подготовки данных: python -m my_project.pipeline"""
-from my_project.data import PROCESSED_PATH, clean, download_raw, load_raw
+"""Полный конвейер подготовки данных: python -m palmer_penguins.pipeline"""
+from palmer_penguins.data import PROCESSED_PATH, clean, download_raw, load_raw
 
 
 def main() -> None:

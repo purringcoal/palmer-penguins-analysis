@@ -23,9 +23,9 @@ Horst, Hill, Gorman (2020), пакет palmerpenguins.
 ## Как запустить
     conda create -n tools -c conda-forge conda-lock   # один раз
     conda activate tools
-    conda-lock install -n test_anaconda conda-lock.yml
-    conda activate test_anaconda
+    conda-lock install -n palmer_penguins conda-lock.yml
+    conda activate palmer_penguins
     pip install -e .
-    python -m my_project.pipeline
+    python -m palmer_penguins.pipeline
     pytest
 Затем открыть блокноты из папки notebooks/ по порядку.

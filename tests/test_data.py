@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from my_project.data import NUMERIC, clean
+from palmer_penguins.data import NUMERIC, clean
 
 
 def make_df() -> pd.DataFrame:
