@@ -24,35 +24,63 @@ Horst, Hill, Gorman (2020), пакет palmerpenguins.
    Чаще всего ошибается на Chinstrap.
 
 ## Как запустить
-    conda create -n tools -c conda-forge conda-lock   # один раз
+
+Нужны [Anaconda](https://www.anaconda.com/download) или Miniforge и git.
+
+    git clone https://github.com/purringcoal/palmer_penguins.git
+    cd palmer_penguins
+
+    conda create -n tools -c conda-forge conda-lock      # один раз на компьютер
     conda activate tools
     conda-lock install -n palmer_penguins conda-lock.yml
+
     conda activate palmer_penguins
     pip install -e .
-    python -m palmer_penguins.pipeline
+    pre-commit install                                   # один раз после клонирования
+
+    python -m palmer_penguins.pipeline                   # скачать и очистить данные
     pytest
-Затем открыть блокноты из папки notebooks/ по порядку.
+
+Затем открыть блокноты из папки `notebooks/` по порядку.
 
 ## Автоматические проверки
 
-При каждом push в `main`, на каждый pull request и раз в неделю по расписанию
-GitHub Actions на чистой машине выполняет ([workflow](.github/workflows/tests.yml)):
+Качество проекта проверяется на трёх уровнях.
+
+| Когда | Чем | Что проверяется |
+|---|---|---|
+| Перед каждым коммитом | [pre-commit](https://pre-commit.com) | ruff (линтер и форматтер), синтаксис YAML/TOML, пробелы и переводы строк, маркеры конфликтов, файлы больше 1 МБ |
+| При каждом push в `main`, на каждый pull request и раз в неделю | [GitHub Actions](.github/workflows/tests.yml) | всё перечисленное ниже, на чистой машине |
+
+Что делает CI:
 
 | Проверка | Инструмент | Что гарантирует |
 |---|---|---|
 | Окружение | micromamba + `conda-lock.yml` | точные версии всех пакетов, как у автора |
-| Стиль и типичные ошибки | [ruff](https://github.com/astral-sh/ruff): `ruff check`, `ruff format --check` | код без замечаний линтера и единообразно отформатирован |
-| Юнит-тесты | `pytest` | очистка данных работает на контрольных примерах |
-| Конвейер данных | `python -m palmer_penguins.pipeline` | данные скачиваются и очищаются с нуля; после очистки ровно 342 строки |
+| Стиль и типичные ошибки | [ruff](https://github.com/astral-sh/ruff) | код без замечаний линтера и единообразно отформатирован |
+| Юнит-тесты | `pytest` | очистка данных и проверка контрольной суммы работают на контрольных примерах, без доступа к сети |
+| Конвейер данных | `python -m palmer_penguins.pipeline` | исходный файл скачивается с нуля, его SHA-256 совпадает с зафиксированным, после очистки ровно 342 строки |
 | Блокноты | `jupyter nbconvert --execute` | все блокноты выполняются сверху вниз в свежем ядре |
 
-Еженедельный запуск нужен, чтобы вовремя заметить изменения во внешнем источнике данных.
+Еженедельный запуск нужен, чтобы вовремя заметить недоступность внешнего источника данных.
 
 ### Проверить локально
 
     conda activate palmer_penguins
-    ruff check .
-    ruff format --check .
+    pre-commit run --all-files    # все хуки по всему проекту
     pytest
+    python -m palmer_penguins.pipeline
 
-Настройки ruff — в `pyproject.toml` (раздел `[tool.ruff]`).
+Настройки ruff находятся в `pyproject.toml` (раздел `[tool.ruff]`), хуки — в `.pre-commit-config.yaml`.
+
+## Как вносить изменения
+
+1. Сделать правку и закоммитить как обычно. Хуки pre-commit запустятся сами.
+2. Если хук исправил файлы («files were modified by this hook»), посмотреть изменения,
+   снова выполнить `git add` для этих файлов и повторить `git commit`.
+3. Если хук нашёл ошибку без автоисправления, поправить её вручную и повторить.
+4. После `git push` дождаться зелёной проверки CI на вкладке Actions.
+
+Зависимости меняются только через `environment.yml` с последующей перегенерацией
+`conda-lock.yml`; оба файла коммитятся вместе. Версия `rev` у `ruff-pre-commit`
+в `.pre-commit-config.yaml` должна совпадать с версией ruff в lock-файле.
